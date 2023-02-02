@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "Expense Tracker v1.0 (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "Expense Tracker v1.0 (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
