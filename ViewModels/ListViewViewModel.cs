@@ -10,13 +10,14 @@ namespace Expense_Tracker_v1._0.ViewModels;
 
 public class ListViewViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly ISampleDataService _sampleDataService;
+    //private readonly ISampleDataService _sampleDataService;
+    private readonly ITransactionDataService _transactionDataService;
 
-    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
+    public ObservableCollection<Transaction> Source { get; } = new ObservableCollection<Transaction>();
 
-    public ListViewViewModel(ISampleDataService sampleDataService)
+    public ListViewViewModel(ITransactionDataService transactionDataService)
     {
-        _sampleDataService = sampleDataService;
+        _transactionDataService = transactionDataService;
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -24,7 +25,7 @@ public class ListViewViewModel : ObservableRecipient, INavigationAware
         Source.Clear();
 
         // TODO: Replace with real data.
-        var data = await _sampleDataService.GetGridDataAsync();
+        var data = await _transactionDataService.GetGridDataAsync();
 
         foreach (var item in data)
         {
