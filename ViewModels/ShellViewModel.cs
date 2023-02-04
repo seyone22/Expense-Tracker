@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using Expense_Tracker_v1._0.Contracts.Services;
 
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace Expense_Tracker_v1._0.ViewModels;
@@ -19,6 +20,14 @@ public class ShellViewModel : ObservableRecipient
         get;
     }
 
+    public ICommand MenuViewsAddTransactionCommand
+    {
+        get;
+    }
+    public ICommand MenuViewsAddAccountCommand
+    {
+        get;
+    }
     public ICommand MenuSettingsCommand
     {
         get;
@@ -59,8 +68,10 @@ public class ShellViewModel : ObservableRecipient
     {
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
+        
 
         MenuFileExitCommand = new RelayCommand(OnMenuFileExit);
+        MenuViewsAddTransactionCommand = new RelayCommand(OnMenuViewsAddTransaction);
         MenuSettingsCommand = new RelayCommand(OnMenuSettings);
         MenuViewsSampleCommand = new RelayCommand(OnMenuViewsSample);
         MenuViewsPayablesCommand = new RelayCommand(OnMenuViewsPayables);
@@ -72,6 +83,8 @@ public class ShellViewModel : ObservableRecipient
 
     private void OnMenuFileExit() => Application.Current.Exit();
 
+    private void OnMenuViewsAddTransaction() => Application.Current.Exit();
+
     private void OnMenuSettings() => NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
 
     private void OnMenuViewsSample() => NavigationService.NavigateTo(typeof(SampleViewModel).FullName!);
@@ -81,4 +94,5 @@ public class ShellViewModel : ObservableRecipient
     private void OnMenuViewsListView() => NavigationService.NavigateTo(typeof(ListViewViewModel).FullName!);
 
     private void OnMenuViewsDashboard() => NavigationService.NavigateTo(typeof(DashboardViewModel).FullName!);
+
 }

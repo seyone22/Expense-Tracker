@@ -36,4 +36,6 @@ public class ListViewViewModel : ObservableRecipient, INavigationAware
     public void OnNavigatedFrom()
     {
     }
+
+
 }

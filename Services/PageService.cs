@@ -19,6 +19,7 @@ public class PageService : IPageService
         Configure<PayablesViewModel, PayablesPage>();
         Configure<SampleViewModel, SamplePage>();
         Configure<SettingsViewModel, SettingsPage>();
+        Configure<AddTransactionViewModel, AddTransactionPage>();
     }
 
     public Type GetPageType(string key)

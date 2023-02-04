@@ -6,8 +6,8 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-
 using Windows.System;
+using Windows.Globalization.NumberFormatting;
 
 namespace Expense_Tracker_v1._0.Views;
 
@@ -43,6 +43,7 @@ public sealed partial class ShellPage : Page
 
         ShellMenuBarSettingsButton.AddHandler(UIElement.PointerPressedEvent, new PointerEventHandler(ShellMenuBarSettingsButton_PointerPressed), true);
         ShellMenuBarSettingsButton.AddHandler(UIElement.PointerReleasedEvent, new PointerEventHandler(ShellMenuBarSettingsButton_PointerReleased), true);
+        
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -100,4 +101,28 @@ public sealed partial class ShellPage : Page
     {
         AnimatedIcon.SetState((UIElement)sender, "Normal");
     }
+
+    public async void AddTransaction_Click(object sender, RoutedEventArgs e)
+    {
+        var result = await addTransactionDialog.ShowAsync(); //no error, just shows squiggly for some reason.
+    }
+
+    public async void AddAccount_Click(object sender, RoutedEventArgs e)
+    {
+        var result = await addAccountDialog.ShowAsync(); //no error, just shows squiggly for some reason.
+    }
+
+    private void SetNumberBoxNumberFormatter()
+    {
+        IncrementNumberRounder rounder = new IncrementNumberRounder();
+        rounder.Increment = 0.25;
+        rounder.RoundingAlgorithm = RoundingAlgorithm.RoundHalfUp;
+
+        DecimalFormatter formatter = new DecimalFormatter();
+        formatter.IntegerDigits = 1;
+        formatter.FractionDigits = 2;
+        formatter.NumberRounder = rounder;
+        ATFormattedNumberBox.NumberFormatter = formatter;
+    }
+
 }

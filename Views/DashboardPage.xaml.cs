@@ -16,4 +16,9 @@ public sealed partial class DashboardPage : Page
         ViewModel = App.GetService<DashboardViewModel>();
         InitializeComponent();
     }
+
+    private void Button_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        DataAccessTest.InitializeDatabase();
+    }
 }

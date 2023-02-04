@@ -123,4 +123,5 @@ public class NavigationService : INavigationService
             Navigated?.Invoke(sender, e);
         }
     }
+
 }

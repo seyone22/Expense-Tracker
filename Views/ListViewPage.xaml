@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:viewmodels="using:Expense_Tracker_v1._0.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ListViewViewModel}"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
@@ -27,10 +27,10 @@
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
                 <!-- TODO: Replace column definitions to match real data. Consider adding Header values to Resources.resw. -->
-                <controls:DataGridTextColumn Binding="{Binding OrderID}" Header="Account" />
-                <controls:DataGridTextColumn Binding="{Binding OrderDate}" Header="Payee" />
-                <controls:DataGridTextColumn Binding="{Binding Company}" Header="Date" />
-                <controls:DataGridTextColumn Binding="{Binding ShipTo}" Header="Amount" />
+                <controls:DataGridTextColumn Binding="{Binding Owner.Name}" Header="Owner" />
+                <controls:DataGridTextColumn Binding="{Binding Payee}" Header="Payee" />
+                <controls:DataGridTextColumn Binding="{Binding Date}" Header="Date" />
+                <controls:DataGridTextColumn Binding="{Binding Value}" Header="Amount" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>

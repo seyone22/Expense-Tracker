@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
+using Windows.Storage;
+
 namespace Expense_Tracker_v1._0;
 
 // To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
@@ -44,6 +46,9 @@ public partial class App : Application
     {
         InitializeComponent();
 
+        //Initialize SQL database
+        DataAccessTest.InitializeDatabase();
+
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).
@@ -63,9 +68,12 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<ISampleDataService, SampleDataService>();
+            services.AddSingleton<ITransactionDataService, TransactionDataService>();
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<AddTransactionViewModel>();
+            services.AddTransient<AddTransactionPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
             services.AddTransient<SampleViewModel>();
@@ -78,6 +86,7 @@ public partial class App : Application
             services.AddTransient<DashboardPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
@@ -99,4 +108,4 @@ public partial class App : Application
 
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
-}
+} 
