@@ -129,7 +129,7 @@ public sealed partial class ShellPage : Page
 
     private void addTransactionDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
-        Transaction newTx = new Transaction(fromAccountInput.Text, payeeInput.Text, dateInput.Date.Value.DateTime, Convert.ToDouble(valueInput.Text) );
+        Transaction newTx = new Transaction(fromAccountInput.Text, payeeInput.Text, dateInput.Date.Value.DateTime, Convert.ToDouble(valueInput.Text));
         SqliteDataService.PushTransaction(newTx);
-    }
+}
 }

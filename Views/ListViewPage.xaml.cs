@@ -1,6 +1,7 @@
 ﻿using Expense_Tracker_v1._0.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
+using Windows.Devices.Input;
 
 namespace Expense_Tracker_v1._0.Views;
 
@@ -17,5 +18,11 @@ public sealed partial class ListViewPage : Page
     {
         ViewModel = App.GetService<ListViewViewModel>();
         InitializeComponent();
+    }
+
+    private void ListViewPage_MouseClick(object sender, MouseEventArgs e)
+    {
+        var r = TransactionsDG.HitTest(e.X, e.Y);
+        CommandBarFlyout1.ShowAt(ContentArea);
     }
 }

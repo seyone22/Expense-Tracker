@@ -19,6 +19,7 @@
             Style="{StaticResource PageTitleStyle}" />
         <controls:DataGrid
             Grid.Row="1"
+            Name="TransactionsDG"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}">
@@ -27,11 +28,24 @@
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
                 <!-- TODO: Replace column definitions to match real data. Consider adding Header values to Resources.resw. -->
-                <controls:DataGridTextColumn Binding="{Binding Owner.Name}" Header="Owner" />
+                <controls:DataGridTextColumn Binding="{Binding AccountID}" Header="Owner" />
                 <controls:DataGridTextColumn Binding="{Binding Payee}" Header="Payee" />
                 <controls:DataGridTextColumn Binding="{Binding Date}" Header="Date" />
                 <controls:DataGridTextColumn Binding="{Binding Value}" Header="Amount" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>
+
+    <Page.Resources>
+        <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
+            <AppBarButton Label="Share" Icon="Share" ToolTipService.ToolTip="Share" Click="OnElementClicked" />
+            <AppBarButton Label="Save" Icon="Save" ToolTipService.ToolTip="Save" Click="OnElementClicked" />
+            <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Click="OnElementClicked" />
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton x:Name="ResizeButton1" Label="Resize" Click="OnElementClicked" />
+                <AppBarButton x:Name="MoveButton1" Label="Move" Click="OnElementClicked" />
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+
+    </Page.Resources>
 </Page>
