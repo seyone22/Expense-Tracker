@@ -8,6 +8,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Windows.System;
 using Windows.Globalization.NumberFormatting;
+using Expense_Tracker_v1._0.Core.Models;
+using Expense_Tracker_v1._0.Services;
 
 namespace Expense_Tracker_v1._0.Views;
 
@@ -122,7 +124,12 @@ public sealed partial class ShellPage : Page
         formatter.IntegerDigits = 1;
         formatter.FractionDigits = 2;
         formatter.NumberRounder = rounder;
-        ATFormattedNumberBox.NumberFormatter = formatter;
+        valueInput.NumberFormatter = formatter;
     }
 
+    private void addTransactionDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+    {
+        Transaction newTx = new Transaction(fromAccountInput.Text, payeeInput.Text, dateInput.Date.Value.DateTime, Convert.ToDouble(valueInput.Text) );
+        SqliteDataService.PushTransaction(newTx);
+    }
 }

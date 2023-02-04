@@ -47,7 +47,7 @@ public partial class App : Application
         InitializeComponent();
 
         //Initialize SQL database
-        DataAccessTest.InitializeDatabase();
+        SqliteDataService.InitializeDatabase();
 
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
@@ -65,10 +65,10 @@ public partial class App : Application
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<ITransactionDataService, TransactionDataService>();
 
             // Core Services
             services.AddSingleton<ISampleDataService, SampleDataService>();
-            services.AddSingleton<ITransactionDataService, TransactionDataService>();
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels

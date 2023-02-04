@@ -78,7 +78,7 @@
         
 
         <ContentDialog x:Name="addTransactionDialog"
-           PrimaryButtonText="Add" IsPrimaryButtonEnabled="False" CloseButtonText="Cancel">
+           PrimaryButtonText="Add" IsPrimaryButtonEnabled="True" CloseButtonText="Cancel" PrimaryButtonClick="addTransactionDialog_PrimaryButtonClick">
             <ContentDialog.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -87,15 +87,15 @@
                 </DataTemplate>
             </ContentDialog.TitleTemplate>
             <StackPanel>
-                <ComboBox Header="Account Holder:" PlaceholderText="Select" Margin="0,10,0,0">
+                <ComboBox Name="fromAccountInput" Header="Account Holder:" PlaceholderText="Select" Margin="0,10,0,0">
                     <x:String>Blue</x:String>
                     <x:String>Green</x:String>
                     <x:String>Red</x:String>
                     <x:String>Yellow</x:String>
                 </ComboBox>
-                <CalendarDatePicker PlaceholderText="Pick a date" Header="Date of Transaction" Margin="0,10,0,0"/>
-                <TextBox Header="Payee" PlaceholderText="" Margin="0,10,0,0"></TextBox>
-                <NumberBox x:Name="ATFormattedNumberBox" Header="Enter amount:" PlaceholderText="0.00" Margin="0,10,0,0"/>
+                <CalendarDatePicker Name="dateInput" PlaceholderText="Pick a date" Header="Date of Transaction" Margin="0,10,0,0"/>
+                <TextBox Name="payeeInput" Header="Payee" PlaceholderText="" Margin="0,10,0,0"></TextBox>
+                <NumberBox Name="valueInput" Header="Enter amount:" PlaceholderText="0.00" Margin="0,10,0,0"/>
             </StackPanel>
         </ContentDialog>
 

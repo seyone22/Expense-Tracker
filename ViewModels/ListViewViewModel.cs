@@ -24,7 +24,6 @@ public class ListViewViewModel : ObservableRecipient, INavigationAware
     {
         Source.Clear();
 
-        // TODO: Replace with real data.
         var data = await _transactionDataService.GetGridDataAsync();
 
         foreach (var item in data)

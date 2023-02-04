@@ -18,7 +18,7 @@
             Style="{StaticResource PageTitleStyle}" />
 
         <Grid Grid.Row="1">
-            <Button Click="Button_Click">Make a Database!</Button>
+
         </Grid>
         
     </Grid>
