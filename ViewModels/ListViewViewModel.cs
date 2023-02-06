@@ -36,5 +36,17 @@ public class ListViewViewModel : ObservableRecipient, INavigationAware
     {
     }
 
+    public async void OnLoaded(object parameter)
+    {
+        Source.Clear();
+
+        var data = await _transactionDataService.GetGridDataAsync();
+
+        foreach (var item in data)
+        {
+            Source.Add(item);
+        }
+    }
+
 
 }

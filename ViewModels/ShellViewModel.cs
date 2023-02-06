@@ -53,6 +53,11 @@ public class ShellViewModel : ObservableRecipient
         get;
     }
 
+    public ICommand GoBackCommand
+    {
+        get;
+    }
+
     public INavigationService NavigationService
     {
         get;
@@ -77,6 +82,8 @@ public class ShellViewModel : ObservableRecipient
         MenuViewsPayablesCommand = new RelayCommand(OnMenuViewsPayables);
         MenuViewsListViewCommand = new RelayCommand(OnMenuViewsListView);
         MenuViewsDashboardCommand = new RelayCommand(OnMenuViewsDashboard);
+
+        GoBackCommand = new RelayCommand(GoBack);
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e) => IsBackEnabled = NavigationService.CanGoBack;
@@ -94,5 +101,7 @@ public class ShellViewModel : ObservableRecipient
     private void OnMenuViewsListView() => NavigationService.NavigateTo(typeof(ListViewViewModel).FullName!);
 
     private void OnMenuViewsDashboard() => NavigationService.NavigateTo(typeof(DashboardViewModel).FullName!);
+
+    private void GoBack() => NavigationService.GoBack();
 
 }

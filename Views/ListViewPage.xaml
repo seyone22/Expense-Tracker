@@ -5,7 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:viewmodels="using:Expense_Tracker_v1._0.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ListViewViewModel}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+    
 
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -19,12 +21,16 @@
             Style="{StaticResource PageTitleStyle}" />
         <controls:DataGrid
             Grid.Row="1"
-            Name="TransactionsDG"
+            x:Name="TransactionsDG"
+            IsReadOnly="True"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
+
             ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}">
             <controls:DataGrid.Resources>
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                <SolidColorBrush x:Key="DataGridCellFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="DataGridCellFocusVisualSecondaryBrush" Color="Transparent" />
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
                 <!-- TODO: Replace column definitions to match real data. Consider adding Header values to Resources.resw. -->
@@ -37,15 +43,6 @@
     </Grid>
 
     <Page.Resources>
-        <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
-            <AppBarButton Label="Share" Icon="Share" ToolTipService.ToolTip="Share" Click="OnElementClicked" />
-            <AppBarButton Label="Save" Icon="Save" ToolTipService.ToolTip="Save" Click="OnElementClicked" />
-            <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Click="OnElementClicked" />
-            <CommandBarFlyout.SecondaryCommands>
-                <AppBarButton x:Name="ResizeButton1" Label="Resize" Click="OnElementClicked" />
-                <AppBarButton x:Name="MoveButton1" Label="Move" Click="OnElementClicked" />
-            </CommandBarFlyout.SecondaryCommands>
-        </CommandBarFlyout>
 
     </Page.Resources>
 </Page>

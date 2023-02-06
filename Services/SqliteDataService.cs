@@ -195,7 +195,7 @@ internal class SqliteDataService : ISqliteDataService
         return entries;
     }
 
-    public void UpdateTransactions()
+    public void RefreshTransaations()
     {
         
     }

@@ -131,5 +131,5 @@ public sealed partial class ShellPage : Page
     {
         Transaction newTx = new Transaction(fromAccountInput.Text, payeeInput.Text, dateInput.Date.Value.DateTime, Convert.ToDouble(valueInput.Text));
         SqliteDataService.PushTransaction(newTx);
-}
+    }
 }

@@ -27,7 +27,7 @@
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <AppBarButton Icon="Back" Grid.Column="0"/>
+            <AppBarButton Icon="Back" Grid.Column="0" Command="{x:Bind ViewModel.GoBackCommand}"/>
             <MenuBar Grid.Column="1">
                 <!--
                 TODO: Update item titles by updating <x:Uid>.Text entries in Strings/en-us/Resources.resw.

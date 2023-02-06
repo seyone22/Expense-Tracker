@@ -20,9 +20,11 @@ public sealed partial class ListViewPage : Page
         InitializeComponent();
     }
 
-    private void ListViewPage_MouseClick(object sender, MouseEventArgs e)
+
+
+    
+    private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var r = TransactionsDG.HitTest(e.X, e.Y);
-        CommandBarFlyout1.ShowAt(ContentArea);
+        ListViewViewModel viewModel = App.GetService<ListViewViewModel>();
     }
 }
