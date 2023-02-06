@@ -100,7 +100,7 @@
         </ContentDialog>
 
         <ContentDialog x:Name="addAccountDialog"
-           PrimaryButtonText="Add" IsPrimaryButtonEnabled="False" CloseButtonText="Cancel">
+           PrimaryButtonText="Add" IsPrimaryButtonEnabled="True" CloseButtonText="Cancel" PrimaryButtonClick="addEventDialog_PrimaryButtonClick">
             <ContentDialog.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -109,8 +109,8 @@
                 </DataTemplate>
             </ContentDialog.TitleTemplate>
             <StackPanel>
-                <TextBox Header="Holder's Name" PlaceholderText="" Margin="0,10,0,0"></TextBox>
-                <NumberBox x:Name="AAFormattedNumberBox" Header="Starting Balance:" PlaceholderText="0.00" Margin="0,10,0,0"/>
+                <TextBox x:Name="nameInput"  Header="Holder's Name" PlaceholderText="" Margin="0,10,0,0"></TextBox>
+                <NumberBox x:Name="balanceInput" Header="Starting Balance:" PlaceholderText="0.00" Margin="0,10,0,0"/>
             </StackPanel>
         </ContentDialog>
     </Grid>

@@ -142,7 +142,29 @@ internal class SqliteDataService : ISqliteDataService
         return entries;
     }
 
+    //ACCOUNT HANDLING
+    public static List<Account> GetAccounts() //returns a List<Account> of all Accounts in the db
+    {
+        List<Account> entries = new List<Account>();
 
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        using (SqliteConnection db =
+           new SqliteConnection($"Filename={dbpath}"))
+        {
+            db.Open();
+
+            SqliteCommand selectCommand = new SqliteCommand
+                ("SELECT * from Accounts", db);
+
+            SqliteDataReader query = selectCommand.ExecuteReader();
+
+            while (query.Read())
+            {
+                entries.Add(AccountDataService.createAccount(query.GetString(1),Convert.ToDouble(query.GetString(2))));
+            }
+        }
+        return entries;
+    }
 
 
     //UNSORTED
@@ -163,6 +185,27 @@ internal class SqliteDataService : ISqliteDataService
             insertCommand.Parameters.AddWithValue("@Payee", tx.Payee);
             insertCommand.Parameters.AddWithValue("@Date", tx.Date);
             insertCommand.Parameters.AddWithValue("@Value", tx.Value);
+
+            insertCommand.ExecuteReader();
+        }
+
+    }
+
+    public static void PushAccount(Account ac)
+    {
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        using (SqliteConnection db =
+          new SqliteConnection($"Filename={dbpath}"))
+        {
+            db.Open();
+
+            SqliteCommand insertCommand = new SqliteCommand();
+            insertCommand.Connection = db;
+
+            // Use parameterized query to prevent SQL injection attacks
+            insertCommand.CommandText = "INSERT INTO Accounts VALUES (NULL, @Name, @Balance);";
+            insertCommand.Parameters.AddWithValue("@Name", ac.Name);
+            insertCommand.Parameters.AddWithValue("@Balance", ac.Balance);
 
             insertCommand.ExecuteReader();
         }

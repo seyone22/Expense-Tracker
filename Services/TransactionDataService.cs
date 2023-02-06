@@ -10,7 +10,7 @@ using Expense_Tracker_v1._0.Core.Models;
 namespace Expense_Tracker_v1._0.Services;
 public class TransactionDataService : ITransactionDataService
 {
-    private List<Transaction> _allTransactions;
+    private List<Transaction>? _allTransactions; //question mark denotes nullable
 
     private static IEnumerable<Transaction> AllTransactions()
     {
@@ -23,10 +23,7 @@ public class TransactionDataService : ITransactionDataService
 
     public async Task<IEnumerable<Transaction>> GetGridDataAsync()
     {
-        if (_allTransactions == null)
-        {
-            _allTransactions = new List<Transaction>(AllTransactions());
-        }
+        _allTransactions = new List<Transaction>(AllTransactions());
 
         await Task.CompletedTask;
         return _allTransactions;
