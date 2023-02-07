@@ -71,11 +71,6 @@
         <Grid Grid.Row="2" Margin="{StaticResource MenuBarContentMargin}">
             <Frame x:Name="NavigationFrame" />
         </Grid>
-        
-        
-        
-        
-        
 
         <ContentDialog x:Name="addTransactionDialog"
            PrimaryButtonText="Add" IsPrimaryButtonEnabled="True" CloseButtonText="Cancel" PrimaryButtonClick="addTransactionDialog_PrimaryButtonClick">
@@ -109,9 +104,20 @@
                 </DataTemplate>
             </ContentDialog.TitleTemplate>
             <StackPanel>
-                <TextBox x:Name="nameInput"  Header="Holder's Name" PlaceholderText="" Margin="0,10,0,0"></TextBox>
+                <TextBox x:Name="accountNameInput"  Header="Holder's Name" PlaceholderText="" Margin="0,10,0,0"></TextBox>
                 <NumberBox x:Name="balanceInput" Header="Starting Balance:" PlaceholderText="0.00" Margin="0,10,0,0"/>
             </StackPanel>
         </ContentDialog>
+
+        <ContentDialog x:Name="startupDialog" PrimaryButtonText="Create" IsPrimaryButtonEnabled="True" SecondaryButtonText="Open Existing" IsSecondaryButtonEnabled="True" CloseButtonText="Cancel">
+            <StackPanel>
+                <TextBlock FontSize="24">New Cash Pool</TextBlock>
+                <TextBox x:Name="newPoolName"  Header="Pool Name" PlaceholderText="" Margin="0,10,0,0"></TextBox>
+            </StackPanel>
+        </ContentDialog>
     </Grid>
+
+    <Page.Resources>
+
+    </Page.Resources>
 </Page>

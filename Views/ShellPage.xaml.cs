@@ -10,6 +10,7 @@ using Windows.System;
 using Windows.Globalization.NumberFormatting;
 using Expense_Tracker_v1._0.Core.Models;
 using Expense_Tracker_v1._0.Services;
+using Expense_Tracker_v1._0.Core.Services;
 
 namespace Expense_Tracker_v1._0.Views;
 
@@ -45,7 +46,13 @@ public sealed partial class ShellPage : Page
 
         ShellMenuBarSettingsButton.AddHandler(UIElement.PointerPressedEvent, new PointerEventHandler(ShellMenuBarSettingsButton_PointerPressed), true);
         ShellMenuBarSettingsButton.AddHandler(UIElement.PointerReleasedEvent, new PointerEventHandler(ShellMenuBarSettingsButton_PointerReleased), true);
-        
+
+        //Check if a database is loaded
+        ShowNewPoolDialog();
+
+        //Initialize SQL database
+        //SqliteDataService.InitializeDatabase();
+
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -114,6 +121,21 @@ public sealed partial class ShellPage : Page
         var result = await addAccountDialog.ShowAsync(); //no error, just shows squiggly for some reason.
     }
 
+    public async void ShowNewPoolDialog()
+    {
+        var result = await startupDialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            var f = new FileService();
+            var s = new SqliteDataService();
+            var d = new DashboardViewModel();
+
+            await s.InitializeDatabaseAsync(f.cleanFilename(newPoolName.Text));
+            await d.LoadDashboardAsync();
+        }
+    }
+
     private void SetNumberBoxNumberFormatter()
     {
         IncrementNumberRounder rounder = new IncrementNumberRounder();
@@ -137,7 +159,7 @@ public sealed partial class ShellPage : Page
 
     private void addEventDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
-        Account newAc = new Account(nameInput.Text, Convert.ToDouble(balanceInput.Text));
+        Account newAc = new Account(accountNameInput.Text, Convert.ToDouble(balanceInput.Text));
         SqliteDataService.PushAccount(newAc);
         //We have to refresh our datasource too.
     }

@@ -12,22 +12,32 @@ using Expense_Tracker_v1._0.Core.Models;
 using Microsoft.Data.Sqlite;
 using System.IO;
 using Windows.Storage;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
 namespace Expense_Tracker_v1._0.Services;
 internal class SqliteDataService : ISqliteDataService
 {
-    private const string defaultDBName = "pool2.db";
+    private const string defaultDBName = "pool.db";
+    private static string currentDBName = "";
 
-    public async Task<SqliteConnection> InitializeDatabaseAsync()
+    public static string GetDBName() => defaultDBName;
+    public static string GetCurrentDatabaseName() => currentDBName;
+
+    public async Task<SqliteConnection> InitializeDatabaseAsync(string DBName)
     {
+        if(string.IsNullOrEmpty(DBName))
+            DBName = defaultDBName;
+        else
+            currentDBName = DBName;
         //does not work in unpackaged apps.
         //DECIDE WHETHER TO USE PACKAGED ON UNPACKAGED BEFORE PROCEEDING TO AVOID PAIN
-        await ApplicationData.Current.LocalFolder.CreateFileAsync(defaultDBName, CreationCollisionOption.OpenIfExists);
+        await ApplicationData.Current.LocalFolder.CreateFileAsync(currentDBName, CreationCollisionOption.OpenIfExists);
 
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        var dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, currentDBName);
         using (SqliteConnection conn = new SqliteConnection($"Filename={dbpath}"))
         {
             conn.Open();
+            createTables(conn);
             return conn;
         }
     }
@@ -36,9 +46,9 @@ internal class SqliteDataService : ISqliteDataService
     {
         //does not work in unpackaged apps.
         //DECIDE WHETHER TO USE PACKAGED ON UNPACKAGED BEFORE PROCEEDING TO AVOID PAIN
-        ApplicationData.Current.LocalFolder.CreateFileAsync(defaultDBName, CreationCollisionOption.OpenIfExists);
+        ApplicationData.Current.LocalFolder.CreateFileAsync(GetCurrentDatabaseName(), CreationCollisionOption.OpenIfExists);
 
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
         using (SqliteConnection conn = new SqliteConnection($"Filename={dbpath}"))
         {
             conn.Open();
@@ -123,7 +133,7 @@ internal class SqliteDataService : ISqliteDataService
     {
         List<Transaction> entries = new List<Transaction>();
 
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
         using (SqliteConnection db =
            new SqliteConnection($"Filename={dbpath}"))
         {
@@ -147,7 +157,7 @@ internal class SqliteDataService : ISqliteDataService
     {
         List<Account> entries = new List<Account>();
 
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
         using (SqliteConnection db =
            new SqliteConnection($"Filename={dbpath}"))
         {
@@ -170,7 +180,7 @@ internal class SqliteDataService : ISqliteDataService
     //UNSORTED
     public static void PushTransaction(Transaction tx)
     {
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
         using (SqliteConnection db =
           new SqliteConnection($"Filename={dbpath}"))
         {
@@ -193,7 +203,7 @@ internal class SqliteDataService : ISqliteDataService
 
     public static void PushAccount(Account ac)
     {
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
         using (SqliteConnection db =
           new SqliteConnection($"Filename={dbpath}"))
         {
@@ -216,7 +226,7 @@ internal class SqliteDataService : ISqliteDataService
     {
         List<String> entries = new List<string>();
 
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "balancesheet.db");
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
         using (SqliteConnection db =
            new SqliteConnection($"Filename={dbpath}"))
         {
@@ -246,23 +256,26 @@ internal class SqliteDataService : ISqliteDataService
     public static double CalculatePoolTotal()
     {
         double poolTotal = 0;
-
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
-        using (SqliteConnection db =
-           new SqliteConnection($"Filename={dbpath}"))
+        if (defaultDBName != "")
         {
-            db.Open();
 
-            string query = "SELECT * FROM Transactions";
-
-            SqliteCommand selectCommand = new SqliteCommand
-                (query, db);
-
-            SqliteDataReader result = selectCommand.ExecuteReader();
-
-            while (result.Read())
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
+            using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
             {
-                poolTotal += Convert.ToDouble(result.GetString(4));
+                db.Open();
+
+                string query = "SELECT * FROM Transactions";
+
+                SqliteCommand selectCommand = new SqliteCommand
+                    (query, db);
+
+                SqliteDataReader result = selectCommand.ExecuteReader();
+
+                while (result.Read())
+                {
+                    poolTotal += Convert.ToDouble(result.GetString(4));
+                }
             }
         }
         return poolTotal;

@@ -46,9 +46,6 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        //Initialize SQL database
-        SqliteDataService.InitializeDatabase();
-
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).

@@ -10,6 +10,6 @@ using Expense_Tracker_v1._0.Core.Models;
 namespace Expense_Tracker_v1._0.Contracts.Services;
 internal interface ISqliteDataService
 {
-    Task<SqliteConnection> InitializeDatabaseAsync();
+    Task<SqliteConnection> InitializeDatabaseAsync(string defaultDBName);
     Task createTablesAsync(SqliteConnection db);
 }
