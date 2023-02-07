@@ -11,6 +11,7 @@ using Windows.Globalization.NumberFormatting;
 using Expense_Tracker_v1._0.Core.Models;
 using Expense_Tracker_v1._0.Services;
 using Expense_Tracker_v1._0.Core.Services;
+using Windows.Storage.Pickers;
 
 namespace Expense_Tracker_v1._0.Views;
 
@@ -131,8 +132,51 @@ public sealed partial class ShellPage : Page
             var s = new SqliteDataService();
             var d = new DashboardViewModel();
 
+            if (f.Exists(newPoolName.Text))
+            {
+                //ShowNewPoolDialog.Closed += ShowNewPoolDialog.Closed;
+            }
+
             await s.InitializeDatabaseAsync(f.cleanFilename(newPoolName.Text));
             await d.LoadDashboardAsync();
+        }
+
+        if (result == ContentDialogResult.Secondary)
+        {
+            var filePicker = new FileOpenPicker();
+
+            // Get the current window's HWND by passing in the Window object
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+
+            // Associate the HWND with the file picker
+            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
+
+            // Use file picker like normal!
+            filePicker.FileTypeFilter.Add("*");
+            var file = await filePicker.PickSingleFileAsync();
+        }
+    }//t
+
+    public async void ShowNewPoolDialog_Closed(ContentDialog sender, ContentDialogClosedEventArgs args)
+    {
+        var f = new FileService();
+        ContentDialog poolExistsDialog = new ContentDialog
+        {
+            Title = "The pool you have selected already exists.",
+            Content = "Do you want to open the existing file?",
+            CloseButtonText = "Cancel",
+            PrimaryButtonText = "Open"
+        };
+
+        ContentDialogResult openExisting = ContentDialogResult.None;
+        if (f.Exists(newPoolName.Text))
+        {
+            openExisting = await poolExistsDialog.ShowAsync();
+        }
+
+        if (openExisting == ContentDialogResult.Primary)
+        {
+
         }
     }
 
@@ -141,7 +185,7 @@ public sealed partial class ShellPage : Page
         IncrementNumberRounder rounder = new IncrementNumberRounder();
         rounder.Increment = 0.25;
         rounder.RoundingAlgorithm = RoundingAlgorithm.RoundHalfUp;
-
+        
         DecimalFormatter formatter = new DecimalFormatter();
         formatter.IntegerDigits = 1;
         formatter.FractionDigits = 2;

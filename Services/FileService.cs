@@ -51,7 +51,7 @@ public class FileService : IFileService
         }
     }
 
-    public bool IsExists(string fileName)
+    public bool Exists(string fileName)
     {
         var path = Path.Combine(ApplicationData.Current.LocalFolder.Path, fileName);
         if (File.Exists(path))

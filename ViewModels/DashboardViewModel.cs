@@ -9,6 +9,8 @@ namespace Expense_Tracker_v1._0.ViewModels;
 public class DashboardViewModel : ObservableRecipient, INavigationAware
 {
     public double PoolTotal, PoolPerPerson;
+    public int PoolCount;
+    public string PoolName;
     public DashboardViewModel()
     {
     }
@@ -20,8 +22,7 @@ public class DashboardViewModel : ObservableRecipient, INavigationAware
     {
         if (!string.IsNullOrEmpty(SqliteDataService.GetCurrentDatabaseName()))
         {
-            PoolTotal = SqliteDataService.CalculatePoolTotal();
-            PoolPerPerson = PoolTotal / SqliteDataService.PoolCount();
+            LoadDashboardAsync();
         }
     }
 
@@ -30,6 +31,8 @@ public class DashboardViewModel : ObservableRecipient, INavigationAware
 
         PoolTotal = SqliteDataService.CalculatePoolTotal();
         PoolPerPerson = PoolTotal / SqliteDataService.PoolCount();
+        PoolName = SqliteDataService.GetCurrentDatabaseName();
+        PoolCount = 2;
         await Task.CompletedTask;
     }
 }

@@ -31,8 +31,11 @@
                     </TextBlock>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center" Margin="0, 50, 0, 0">
-                    <TextBlock Text="Cash Pool Name"></TextBlock>
-                    <TextBlock Text="3 Members"></TextBlock>
+                    <TextBlock FontSize="32" Text="{x:Bind ViewModel.PoolName}"></TextBlock>
+                    <TextBlock>
+                        <Run Text="{x:Bind ViewModel.PoolCount}"/>
+                        <Run Text="Members in this pool"/>
+                    </TextBlock>
                 </StackPanel>
 
             </StackPanel>

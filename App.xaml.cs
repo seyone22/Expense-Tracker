@@ -73,8 +73,8 @@ public partial class App : Application
             services.AddTransient<AddTransactionPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
-            services.AddTransient<SampleViewModel>();
-            services.AddTransient<SamplePage>();
+            services.AddTransient<AccountsViewModel>();
+            services.AddTransient<AccountsPage>();
             services.AddTransient<PayablesViewModel>();
             services.AddTransient<PayablesPage>();
             services.AddTransient<ListViewViewModel>();

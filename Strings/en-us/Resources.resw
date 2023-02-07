@@ -153,12 +153,12 @@
     <value>Payables</value>
     <comment>Page title for PayablesPage</comment>
   </data>
-  <data name="ShellMenuItem_Views_Sample.Text" xml:space="preserve">
+  <data name="ShellMenuItem_Views_Accounts.Text" xml:space="preserve">
     <value>Accounts</value>
   </data>
-  <data name="Sample_Title.Text" xml:space="preserve">
+  <data name="Accounts_Title.Text" xml:space="preserve">
     <value>Accounts</value>
-    <comment>Page title for SamplePage</comment>
+    <comment>Page title for AccountsPage</comment>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
     <value>Personalization</value>
