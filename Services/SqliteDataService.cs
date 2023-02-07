@@ -242,4 +242,36 @@ internal class SqliteDataService : ISqliteDataService
     {
         
     }
+
+    public static double CalculatePoolTotal()
+    {
+        double poolTotal = 0;
+
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        using (SqliteConnection db =
+           new SqliteConnection($"Filename={dbpath}"))
+        {
+            db.Open();
+
+            string query = "SELECT * FROM Transactions";
+
+            SqliteCommand selectCommand = new SqliteCommand
+                (query, db);
+
+            SqliteDataReader result = selectCommand.ExecuteReader();
+
+            while (result.Read())
+            {
+                poolTotal += Convert.ToDouble(result.GetString(4));
+            }
+        }
+        return poolTotal;
+    }
+
+    public static double PoolCount()
+    {
+        Pool pool = new Pool();
+        pool = GetPool();
+        return pool.personCount;
+    }
 }
