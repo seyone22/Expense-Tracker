@@ -16,7 +16,7 @@ using Windows.Storage;
 namespace Expense_Tracker_v1._0.Services;
 internal class SqliteDataService : ISqliteDataService
 {
-    private const string defaultDBName = "pool.db";
+    private const string defaultDBName = "pool2.db";
 
     public async Task<SqliteConnection> InitializeDatabaseAsync()
     {
@@ -271,7 +271,7 @@ internal class SqliteDataService : ISqliteDataService
     public static double PoolCount()
     {
         Pool pool = new Pool();
-        pool = GetPool();
+        //pool = GetPool();
         return pool.personCount;
     }
 }
