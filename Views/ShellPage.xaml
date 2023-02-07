@@ -39,7 +39,7 @@
                         <MenuFlyoutItem x:Uid="ShellMenuItem_Views_Dashboard" Command="{x:Bind ViewModel.MenuViewsDashboardCommand}" />
                         <MenuFlyoutItem x:Uid="ShellMenuItem_Views_ListView" Command="{x:Bind ViewModel.MenuViewsListViewCommand}" />
                         <MenuFlyoutItem x:Uid="ShellMenuItem_Views_Payables" Command="{x:Bind ViewModel.MenuViewsPayablesCommand}" />
-                        <MenuFlyoutItem x:Uid="ShellMenuItem_Views_Sample" Command="{x:Bind ViewModel.MenuViewsSampleCommand}" />
+                        <MenuFlyoutItem x:Uid="ShellMenuItem_Views_AccountsList" Command="{x:Bind ViewModel.MenuViewsAccountsListCommand}" />
                     </MenuBarItem.Items>
                 </MenuBarItem>
 

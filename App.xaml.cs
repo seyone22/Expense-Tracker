@@ -24,6 +24,8 @@ public partial class App : Application
     // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
     // https://docs.microsoft.com/dotnet/core/extensions/configuration
     // https://docs.microsoft.com/dotnet/core/extensions/logging
+
+    public string dbName = "pool.db";
     public IHost Host
     {
         get;
@@ -45,9 +47,6 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-
-        //Initialize SQL database
-        SqliteDataService.InitializeDatabase();
 
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
@@ -76,8 +75,8 @@ public partial class App : Application
             services.AddTransient<AddTransactionPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
-            services.AddTransient<SampleViewModel>();
-            services.AddTransient<SamplePage>();
+            services.AddTransient<AccountsListViewModel>();
+            services.AddTransient<AccountsListPage>();
             services.AddTransient<PayablesViewModel>();
             services.AddTransient<PayablesPage>();
             services.AddTransient<ListViewViewModel>();
@@ -96,6 +95,8 @@ public partial class App : Application
         UnhandledException += App_UnhandledException;
     }
 
+
+
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
         // TODO: Log and handle exceptions as appropriate.
@@ -107,5 +108,23 @@ public partial class App : Application
         base.OnLaunched(args);
 
         await App.GetService<IActivationService>().ActivateAsync(args);
+
+        //Initialize SQL database
+        var db = ApplicationData.Current.LocalFolder.TryGetItemAsync(dbName);
+
+        SqliteDataService s = new SqliteDataService();
+        if (db == null)
+        {
+            //does not work in unpackaged apps.
+            //DECIDE WHETHER TO USE PACKAGED ON UNPACKAGED BEFORE PROCEEDING TO AVOID PAIN
+            await ApplicationData.Current.LocalFolder.CreateFileAsync(dbName, CreationCollisionOption.OpenIfExists);
+
+            await s.InitializeDatabaseAsync();
+        }
+        else
+        {
+            await s.InitializeDatabaseAsync();
+
+        }
     }
 } 

@@ -33,7 +33,7 @@ public class ShellViewModel : ObservableRecipient
         get;
     }
 
-    public ICommand MenuViewsSampleCommand
+    public ICommand MenuViewsAccountsListCommand
     {
         get;
     }
@@ -78,7 +78,7 @@ public class ShellViewModel : ObservableRecipient
         MenuFileExitCommand = new RelayCommand(OnMenuFileExit);
         MenuViewsAddTransactionCommand = new RelayCommand(OnMenuViewsAddTransaction);
         MenuSettingsCommand = new RelayCommand(OnMenuSettings);
-        MenuViewsSampleCommand = new RelayCommand(OnMenuViewsSample);
+        MenuViewsAccountsListCommand = new RelayCommand(OnMenuViewsAccountsList);
         MenuViewsPayablesCommand = new RelayCommand(OnMenuViewsPayables);
         MenuViewsListViewCommand = new RelayCommand(OnMenuViewsListView);
         MenuViewsDashboardCommand = new RelayCommand(OnMenuViewsDashboard);
@@ -94,7 +94,7 @@ public class ShellViewModel : ObservableRecipient
 
     private void OnMenuSettings() => NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
 
-    private void OnMenuViewsSample() => NavigationService.NavigateTo(typeof(SampleViewModel).FullName!);
+    private void OnMenuViewsAccountsList() => NavigationService.NavigateTo(typeof(AccountsListViewModel).FullName!);
 
     private void OnMenuViewsPayables() => NavigationService.NavigateTo(typeof(PayablesViewModel).FullName!);
 

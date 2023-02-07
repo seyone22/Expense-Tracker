@@ -17,7 +17,7 @@ public class PageService : IPageService
         Configure<DashboardViewModel, DashboardPage>();
         Configure<ListViewViewModel, ListViewPage>();
         Configure<PayablesViewModel, PayablesPage>();
-        Configure<SampleViewModel, SamplePage>();
+        Configure<AccountsListViewModel, AccountsListPage>();
         Configure<SettingsViewModel, SettingsPage>();
         Configure<AddTransactionViewModel, AddTransactionPage>();
     }

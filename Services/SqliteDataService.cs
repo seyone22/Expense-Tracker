@@ -16,7 +16,7 @@ using Windows.Storage;
 namespace Expense_Tracker_v1._0.Services;
 internal class SqliteDataService : ISqliteDataService
 {
-    private const string defaultDBName = "pool.db";
+    private const string defaultDBName = "pool3.db";
 
     public async Task<SqliteConnection> InitializeDatabaseAsync()
     {
@@ -28,14 +28,13 @@ internal class SqliteDataService : ISqliteDataService
         using (SqliteConnection conn = new SqliteConnection($"Filename={dbpath}"))
         {
             conn.Open();
+            await createTablesAsync(conn);
             return conn;
         }
     }
 
     public static void InitializeDatabase()
     {
-        //does not work in unpackaged apps.
-        //DECIDE WHETHER TO USE PACKAGED ON UNPACKAGED BEFORE PROCEEDING TO AVOID PAIN
         ApplicationData.Current.LocalFolder.CreateFileAsync(defaultDBName, CreationCollisionOption.OpenIfExists);
 
         string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
@@ -64,17 +63,19 @@ internal class SqliteDataService : ISqliteDataService
             "EXISTS Payees (pay_id INTEGER PRIMARY KEY," +
             "payee_name NVARCHAR(2048) NULL)";
 
-        string createMetadataTable = "CREATE TABLE IF NOT " +
-            "EXISTS Metadata (rowid INTEGER PRIMARY KEY, " +
+        string createPoolMetadataTable = "CREATE TABLE IF NOT " +
+            "EXISTS PoolMetadata (rowid INTEGER PRIMARY KEY, " +
             "author NVARCHAR(2048) NULL," +
+            "poolName NVARCAHR(2048) NULL" +
             "date_created INTEGER(2048) NULL," +
+            "pool_count INTEGER(2048) NULL," +
             "last_modified INTEGER(2048) NULL)";
 
 
         SqliteCommand createAccounts = new SqliteCommand(createAccountTable, db);
         SqliteCommand createTransactions = new SqliteCommand(createTransactionTable, db);
         SqliteCommand createPayees = new SqliteCommand(createPayeeTable, db);
-        SqliteCommand createMetadata = new SqliteCommand(createMetadataTable, db);
+        SqliteCommand createMetadata = new SqliteCommand(createPoolMetadataTable, db);
 
         await createAccounts.ExecuteNonQueryAsync();
         await createTransactions.ExecuteNonQueryAsync();
@@ -100,9 +101,10 @@ internal class SqliteDataService : ISqliteDataService
             "EXISTS Payees (pay_id INTEGER PRIMARY KEY," +
             "payee_name NVARCHAR(2048) NULL)";
 
-        string createMetadataTable = "CREATE TABLE IF NOT " +
-            "EXISTS Metadata (rowid INTEGER PRIMARY KEY, " +
+        string createPoolMetadataTable = "CREATE TABLE IF NOT " +
+            "EXISTS PoolMetadata (rowid INTEGER PRIMARY KEY, " +
             "author NVARCHAR(2048) NULL," +
+            "poolName NVARCAHR(2048) NULL" +
             "date_created INTEGER(2048) NULL," +
             "last_modified INTEGER(2048) NULL)";
 
@@ -110,7 +112,7 @@ internal class SqliteDataService : ISqliteDataService
         SqliteCommand createAccounts = new SqliteCommand(createAccountTable, db);
         SqliteCommand createTransactions = new SqliteCommand(createTransactionTable, db);
         SqliteCommand createPayees = new SqliteCommand(createPayeeTable, db);
-        SqliteCommand createMetadata = new SqliteCommand(createMetadataTable, db);
+        SqliteCommand createMetadata = new SqliteCommand(createPoolMetadataTable, db);
 
         createAccounts.ExecuteNonQueryAsync();
         createTransactions.ExecuteNonQueryAsync();
@@ -166,6 +168,32 @@ internal class SqliteDataService : ISqliteDataService
         return entries;
     }
 
+    //POOL HANDLING
+    public static Pool GetPool() //returns a Pool of all the Pool in the DB
+    {
+        Pool usingPool = new Pool();
+
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        using (SqliteConnection db =
+           new SqliteConnection($"Filename={dbpath}"))
+        {
+            db.Open();
+
+            SqliteCommand selectCommand = new SqliteCommand
+                ("SELECT * from PoolMetadata", db);
+
+            SqliteDataReader query = selectCommand.ExecuteReader();
+
+            while (query.Read())
+            {
+                usingPool.name = query.GetString(2);
+                usingPool.author = query.GetString(1);
+                usingPool.dateCreated = Convert.ToDateTime(query.GetString(3));
+            }
+        }
+        return usingPool;
+    }
+
 
     //UNSORTED
     public static void PushTransaction(Transaction tx)
@@ -216,7 +244,7 @@ internal class SqliteDataService : ISqliteDataService
     {
         List<String> entries = new List<string>();
 
-        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "balancesheet.db");
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
         using (SqliteConnection db =
            new SqliteConnection($"Filename={dbpath}"))
         {
@@ -237,9 +265,35 @@ internal class SqliteDataService : ISqliteDataService
 
         return entries;
     }
-
-    public void RefreshTransaations()
+    public static double CalculatePoolTotal()
     {
-        
+        double poolTotal = 0;
+
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, defaultDBName);
+        using (SqliteConnection db =
+           new SqliteConnection($"Filename={dbpath}"))
+        {
+            db.Open();
+
+            string query = "SELECT * FROM Transactions";
+
+            SqliteCommand selectCommand = new SqliteCommand
+                (query, db);
+
+            SqliteDataReader result = selectCommand.ExecuteReader();
+
+            while (result.Read())
+            {
+                poolTotal+=Convert.ToDouble(result.GetString(4));
+            }
+        }
+        return poolTotal;
+    }
+
+    public static double PoolCount()
+    {
+        Pool pool = new Pool();
+        pool = GetPool();
+        return pool.personCount;
     }
 }

@@ -19,9 +19,6 @@ public sealed partial class ListViewPage : Page
         ViewModel = App.GetService<ListViewViewModel>();
         InitializeComponent();
     }
-
-
-
     
     private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {

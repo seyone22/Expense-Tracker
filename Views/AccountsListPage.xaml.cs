@@ -4,16 +4,16 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Expense_Tracker_v1._0.Views;
 
-public sealed partial class SamplePage : Page
+public sealed partial class AccountsListPage : Page
 {
-    public SampleViewModel ViewModel
+    public AccountsListViewModel ViewModel
     {
         get;
     }
 
-    public SamplePage()
+    public AccountsListPage()
     {
-        ViewModel = App.GetService<SampleViewModel>();
+        ViewModel = App.GetService<AccountsListViewModel>();
         InitializeComponent();
     }
 }

@@ -28,4 +28,11 @@ public class TransactionDataService : ITransactionDataService
         await Task.CompletedTask;
         return _allTransactions;
     }
+
+    public async Task<double> GetPoolTotal()
+    {
+        double x = SqliteDataService.CalculatePoolTotal();
+        await Task.CompletedTask;
+        return x;
+    }
 }

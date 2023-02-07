@@ -1,10 +1,11 @@
-﻿{
-    "profiles": {
-      "Expense Tracker v1.0 (Package)": {
-        "commandName": "MsixPackage"
-      },
-      "Expense Tracker v1.0 (Unpackaged)": {
-        "commandName": "Project"
-      }
+{
+  "profiles": {
+    "Expense Tracker v1.0 (Package)": {
+      "commandName": "MsixPackage",
+      "alwaysReinstallApp": false
+    },
+    "Expense Tracker v1.0 (Unpackaged)": {
+      "commandName": "Project"
     }
+  }
 }

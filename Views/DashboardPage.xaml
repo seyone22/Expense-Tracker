@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
+    <Grid x:Name="ContentArea" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />
@@ -18,8 +18,31 @@
             Style="{StaticResource PageTitleStyle}" />
 
         <Grid Grid.Row="1">
+            <StackPanel Padding="24" Background="DimGray" BorderThickness="1" Height="256" CornerRadius="4" >
+                <StackPanel HorizontalAlignment="Right">
+                    <TextBlock FontSize="32">
+                            <Run Text="Rs."/>
+                            <Run Text="{x:Bind ViewModel.PoolTotal}"/>
+                    </TextBlock>
+                    <TextBlock>
+                            <Run Text="Rs."/>
+                            <Run Text="{x:Bind ViewModel.PoolPerPerson}"/>
+                            <Run Text="per person"/>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Center" Margin="0, 50, 0, 0">
+                    <TextBlock Text="Cash Pool Name"></TextBlock>
+                    <TextBlock Text="3 Members"></TextBlock>
+                </StackPanel>
 
+            </StackPanel>
+            <ItemsRepeater>
+                
+            </ItemsRepeater>
         </Grid>
-        
     </Grid>
+    <Page.Resources>
+
+
+    </Page.Resources>
 </Page>
