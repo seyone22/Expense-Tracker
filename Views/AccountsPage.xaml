@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:viewmodels="using:Expense_Tracker_v1._0.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:AccountsViewModel}"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
@@ -27,23 +27,8 @@
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
                 <!-- TODO: Replace column definitions to match real data. Consider adding Header values to Resources.resw. -->
-                <controls:DataGridTextColumn Binding="{Binding OrderID}" Header="OrderID" />
-                <controls:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
-                <controls:DataGridTextColumn Binding="{Binding Company}" Header="Company" />
-                <controls:DataGridTextColumn Binding="{Binding ShipTo}" Header="ShipTo" />
-                <controls:DataGridTextColumn Binding="{Binding OrderTotal}" Header="OrderTotal" />
-                <controls:DataGridTextColumn Binding="{Binding Status}" Header="Status" />
-                <controls:DataGridTemplateColumn Header="Symbol">
-                    <controls:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <FontIcon
-                                HorizontalAlignment="Left"
-                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                Glyph="{Binding Symbol}"
-                                AutomationProperties.Name="{Binding SymbolName}" />
-                        </DataTemplate>
-                    </controls:DataGridTemplateColumn.CellTemplate>
-                </controls:DataGridTemplateColumn>
+                <controls:DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                <controls:DataGridTextColumn Binding="{Binding Balance}" Header="Balance" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>

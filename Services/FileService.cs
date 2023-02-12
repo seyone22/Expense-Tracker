@@ -1,8 +1,11 @@
-﻿using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Text;
 
 using Expense_Tracker_v1._0.Core.Contracts.Services;
-
+using Expense_Tracker_v1._0.Core.Models;
 using Newtonsoft.Json;
+using Windows.Storage.Search;
 
 namespace Expense_Tracker_v1._0.Core.Services;
 
@@ -39,7 +42,7 @@ public class FileService : IFileService
         }
     }
 
-    public string cleanFilename(string input, string ext = ".db")
+    public string CleanFileName(string input, string ext = ".db")
     {
         if (input.LastIndexOf('.') == -1)
         {
@@ -51,6 +54,8 @@ public class FileService : IFileService
         }
     }
 
+    public static string StripExtension(string input) => input.Substring(0, input.LastIndexOf('.'));
+
     public bool Exists(string fileName)
     {
         var path = Path.Combine(ApplicationData.Current.LocalFolder.Path, fileName);
@@ -61,5 +66,20 @@ public class FileService : IFileService
         {
             return false;
         }
+    }
+    //split this function so that the pool stuff is in pool.cs and the file handling is here.
+    public static List<Pool> GetPoolsList()
+    {
+        List<Pool> pools = new List<Pool>();
+        StorageFolder path = ApplicationData.Current.LocalFolder;
+        StorageFileQueryResult results = path.CreateFileQuery();
+
+        var filesInFolder = results.GetFilesAsync();
+        foreach (var item in filesInFolder.GetResults())
+        {
+            Pool p = new Pool(item.DisplayName, item.DateCreated.DateTime);
+            pools.Add(p);
+        }
+        return pools;
     }
 }

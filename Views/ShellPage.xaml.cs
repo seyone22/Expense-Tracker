@@ -12,11 +12,14 @@ using Expense_Tracker_v1._0.Core.Models;
 using Expense_Tracker_v1._0.Services;
 using Expense_Tracker_v1._0.Core.Services;
 using Windows.Storage.Pickers;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Expense_Tracker_v1._0.Views;
 
 public sealed partial class ShellPage : Page
 {
+    public ObservableCollection<Pool> Source { get; } = new ObservableCollection<Pool>();
     public ShellViewModel ViewModel
     {
         get;
@@ -51,9 +54,15 @@ public sealed partial class ShellPage : Page
         //Check if a database is loaded
         ShowNewPoolDialog();
 
-        //Initialize SQL database
-        //SqliteDataService.InitializeDatabase();
+        //Load up accounts for new account dialog
+        //Accounts.Clear();
 
+        //var data = (IEnumerable<Account>)_accountDataService.GetGridDataAsync();
+
+        //foreach (var item in data)
+        //{
+        //    Accounts.Add(item);
+        //}
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -124,6 +133,14 @@ public sealed partial class ShellPage : Page
 
     public async void ShowNewPoolDialog()
     {
+        ExistingPoolsDataService e = new();
+        //var data = await e.Populate();
+
+        //foreach (var item in data)
+        //{
+        //    Source.Add(item);
+        //}
+
         var result = await startupDialog.ShowAsync();
 
         if (result == ContentDialogResult.Primary)
@@ -137,7 +154,7 @@ public sealed partial class ShellPage : Page
                 //ShowNewPoolDialog.Closed += ShowNewPoolDialog.Closed;
             }
 
-            await s.InitializeDatabaseAsync(f.cleanFilename(newPoolName.Text));
+            await s.InitializeDatabaseAsync(f.CleanFileName(newPoolName.Text));
             await d.LoadDashboardAsync();
         }
 
@@ -201,7 +218,7 @@ public sealed partial class ShellPage : Page
 
     }
 
-    private void addEventDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+    private void addAccountDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
         Account newAc = new Account(accountNameInput.Text, Convert.ToDouble(balanceInput.Text));
         SqliteDataService.PushAccount(newAc);

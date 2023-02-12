@@ -1,10 +1,12 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Expense_Tracker_v1._0.Contracts.Services;
-
+using Expense_Tracker_v1._0.Core.Models;
+using Expense_Tracker_v1._0.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -13,6 +15,10 @@ namespace Expense_Tracker_v1._0.ViewModels;
 
 public class ShellViewModel : ObservableRecipient
 {
+    private readonly IAccountDataService _accountDataService;
+
+    public ObservableCollection<Account> Accounts { get; } = new ObservableCollection<Account>();
+
     private bool _isBackEnabled;
 
     public ICommand MenuFileExitCommand
@@ -69,7 +75,7 @@ public class ShellViewModel : ObservableRecipient
         set => SetProperty(ref _isBackEnabled, value);
     }
 
-    public ShellViewModel(INavigationService navigationService)
+    public ShellViewModel(INavigationService navigationService, IAccountDataService accountDataService)
     {
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
@@ -84,8 +90,20 @@ public class ShellViewModel : ObservableRecipient
         MenuViewsDashboardCommand = new RelayCommand(OnMenuViewsDashboard);
 
         GoBackCommand = new RelayCommand(GoBack);
-    }
 
+        _accountDataService = accountDataService;
+    }
+    public async void OnNavigatedTo(object parameter)
+    {
+        Accounts.Clear();
+
+        var data = await _accountDataService.GetGridDataAsync();
+
+        foreach (var item in data)
+        {
+            Accounts.Add(item);
+        }
+    }
     private void OnNavigated(object sender, NavigationEventArgs e) => IsBackEnabled = NavigationService.CanGoBack;
 
     private void OnMenuFileExit() => Application.Current.Exit();

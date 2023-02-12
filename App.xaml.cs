@@ -63,6 +63,7 @@ public partial class App : Application
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ITransactionDataService, TransactionDataService>();
+            services.AddSingleton<IAccountDataService, AccountDataService>();
 
             // Core Services
             services.AddSingleton<ISampleDataService, SampleDataService>();

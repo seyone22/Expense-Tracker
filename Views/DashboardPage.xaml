@@ -22,7 +22,7 @@
                 <StackPanel HorizontalAlignment="Right">
                     <TextBlock FontSize="32">
                             <Run Text="Rs."/>
-                            <Run Text="{x:Bind ViewModel.PoolTotal}"/>
+                            <Run Text="{x:Bind ViewModel.current.balance}"/>
                     </TextBlock>
                     <TextBlock>
                             <Run Text="Rs."/>
@@ -31,9 +31,9 @@
                     </TextBlock>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center" Margin="0, 50, 0, 0">
-                    <TextBlock FontSize="32" Text="{x:Bind ViewModel.PoolName}"></TextBlock>
+                    <TextBlock FontSize="32" Text="{x:Bind ViewModel.current.name}"></TextBlock>
                     <TextBlock>
-                        <Run Text="{x:Bind ViewModel.PoolCount}"/>
+                        <Run Text="{x:Bind ViewModel.current.personCount}"/>
                         <Run Text="Members in this pool"/>
                     </TextBlock>
                 </StackPanel>

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 using Expense_Tracker_v1._0.Core.Models;
 
-namespace Expense_Tracker_v1._0.Contracts.Services;
-internal interface IAccountDataService
+public interface IAccountDataService
 {
     Task<IEnumerable<Account>> GetGridDataAsync();
 }

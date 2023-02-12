@@ -13,6 +13,7 @@ using Microsoft.Data.Sqlite;
 using System.IO;
 using Windows.Storage;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using Expense_Tracker_v1._0.Core.Services;
 
 namespace Expense_Tracker_v1._0.Services;
 internal class SqliteDataService : ISqliteDataService
@@ -34,13 +35,42 @@ internal class SqliteDataService : ISqliteDataService
         await ApplicationData.Current.LocalFolder.CreateFileAsync(currentDBName, CreationCollisionOption.OpenIfExists);
 
         var dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, currentDBName);
-        using (SqliteConnection conn = new SqliteConnection($"Filename={dbpath}"))
+        using SqliteConnection conn = new SqliteConnection($"Filename={dbpath}");
+        conn.Open();
+        await createTablesAsync(conn);
+        await CreateMetadata();
+        return conn;
+    }
+
+    public async Task CreateMetadata()
+    {
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
+        using (SqliteConnection db =
+          new SqliteConnection($"Filename={dbpath}"))
         {
-            conn.Open();
-            createTables(conn);
-            return conn;
+            db.Open();
+
+            SqliteCommand insertCommand = new SqliteCommand
+            {
+                Connection = db,
+
+                // Use parameterized query to prevent SQL injection attacks
+                CommandText = "INSERT INTO Metadata VALUES (NULL, @PoolAuthor, @PoolName, @DateCreated, @LastModified);"
+            };
+
+            insertCommand.Parameters.AddWithValue("@PoolAuthor", "SAMPLE AUTHOR");
+            insertCommand.Parameters.AddWithValue("@PoolName", FileService.StripExtension(GetCurrentDatabaseName()) );
+            insertCommand.Parameters.AddWithValue("@DateCreated", DateTime.Now);
+            insertCommand.Parameters.AddWithValue("@LastModified", DateTime.Now);
+
+            await insertCommand.ExecuteReaderAsync();
         }
     }
+
+    //public async Task LoadDatabaseAsync(File dbfile)
+    //{
+    //    SqliteConnection conn = new SqliteConnection(dbfile.);
+    //}
 
     public static void InitializeDatabase()
     {
@@ -77,6 +107,7 @@ internal class SqliteDataService : ISqliteDataService
         string createMetadataTable = "CREATE TABLE IF NOT " +
             "EXISTS Metadata (rowid INTEGER PRIMARY KEY, " +
             "author NVARCHAR(2048) NULL," +
+            "name NVARCHAR(2048) NULL," +
             "date_created INTEGER(2048) NULL," +
             "last_modified INTEGER(2048) NULL)";
 
@@ -113,6 +144,7 @@ internal class SqliteDataService : ISqliteDataService
         string createMetadataTable = "CREATE TABLE IF NOT " +
             "EXISTS Metadata (rowid INTEGER PRIMARY KEY, " +
             "author NVARCHAR(2048) NULL," +
+            "name NVARCHAR(2048) NULL," +
             "date_created INTEGER(2048) NULL," +
             "last_modified INTEGER(2048) NULL)";
 
@@ -219,7 +251,6 @@ internal class SqliteDataService : ISqliteDataService
 
             insertCommand.ExecuteReader();
         }
-
     }
 
     public static List<String> GetTransaction(string x) //returns a List<String> of all Transactions in the db
@@ -253,6 +284,36 @@ internal class SqliteDataService : ISqliteDataService
         
     }
 
+    public static Pool GetCurrentPool()
+    {
+        Pool currentPool = new Pool();
+        if (defaultDBName != "")
+        {
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
+            using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+
+                string query = "SELECT * FROM Metadata";
+
+                SqliteCommand selectCommand = new SqliteCommand
+                    (query, db);
+
+                SqliteDataReader result = selectCommand.ExecuteReader();
+
+                while (result.Read())
+                {
+                    currentPool.author = result.GetString(1);
+                    currentPool.name = result.GetString(2);
+                    currentPool.dateCreated = Convert.ToDateTime(result.GetString(3));
+                }    
+            }
+        }
+        return currentPool;
+    }
+
     public static double CalculatePoolTotal()
     {
         double poolTotal = 0;
@@ -281,7 +342,7 @@ internal class SqliteDataService : ISqliteDataService
         return poolTotal;
     }
 
-    public static double PoolCount()
+    public static int PoolCount()
     {
         Pool pool = new Pool();
         //pool = GetPool();

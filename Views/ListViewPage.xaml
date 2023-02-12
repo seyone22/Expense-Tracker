@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -40,9 +41,19 @@
                 <controls:DataGridTextColumn Binding="{Binding Value}" Header="Amount" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
+        <Button Content="TESTING BUTTON!!!" Grid.Row="2" x:Name="myImageButton" ContextRequested="MyImageButton_ContextRequested"/>
     </Grid>
+    
 
     <Page.Resources>
-
+        <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
+            <AppBarButton Label="Share" Icon="Share" ToolTipService.ToolTip="Share"  />
+            <AppBarButton Label="Save" Icon="Save" ToolTipService.ToolTip="Save" />
+            <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete"/>
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton x:Name="ResizeButton1" Label="Resize" />
+                <AppBarButton x:Name="MoveButton1" Label="Move"/>
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
     </Page.Resources>
 </Page>

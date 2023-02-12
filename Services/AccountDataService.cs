@@ -9,7 +9,7 @@ using Expense_Tracker_v1._0.Contracts.Services;
 using Expense_Tracker_v1._0.Core.Models;
 
 namespace Expense_Tracker_v1._0.Services;
-internal class AccountDataService : IAccountDataService
+public class AccountDataService : IAccountDataService
 {
     private List<Account>? _allAccounts; //question mark denotes nullable
 
