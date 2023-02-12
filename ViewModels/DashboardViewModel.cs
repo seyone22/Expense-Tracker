@@ -9,7 +9,7 @@ namespace Expense_Tracker_v1._0.ViewModels;
 
 public class DashboardViewModel : ObservableRecipient, INavigationAware
 {
-    public double  PoolPerPerson;
+    public double PoolPerPerson;
 
     public Pool current = new();
     public DashboardViewModel()

@@ -20,6 +20,7 @@ public class PageService : IPageService
         Configure<AccountsViewModel, AccountsPage>();
         Configure<SettingsViewModel, SettingsPage>();
         Configure<AddTransactionViewModel, AddTransactionPage>();
+        Configure<AccViewModel, AccPage>();
     }
 
     public Type GetPageType(string key)

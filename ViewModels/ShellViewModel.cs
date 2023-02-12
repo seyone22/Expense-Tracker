@@ -49,6 +49,11 @@ public class ShellViewModel : ObservableRecipient
         get;
     }
 
+    public ICommand MenuViewsAccCommand
+    {
+        get;
+    }
+
     public ICommand MenuViewsListViewCommand
     {
         get;
@@ -77,21 +82,22 @@ public class ShellViewModel : ObservableRecipient
 
     public ShellViewModel(INavigationService navigationService, IAccountDataService accountDataService)
     {
+        _accountDataService = accountDataService;
+
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
-        
 
         MenuFileExitCommand = new RelayCommand(OnMenuFileExit);
-        MenuViewsAddTransactionCommand = new RelayCommand(OnMenuViewsAddTransaction);
         MenuSettingsCommand = new RelayCommand(OnMenuSettings);
         MenuViewsAccountsCommand = new RelayCommand(OnMenuViewsAccounts);
         MenuViewsPayablesCommand = new RelayCommand(OnMenuViewsPayables);
         MenuViewsListViewCommand = new RelayCommand(OnMenuViewsListView);
         MenuViewsDashboardCommand = new RelayCommand(OnMenuViewsDashboard);
+        MenuViewsAccCommand = new RelayCommand(OnMenuViewsAcc);
 
         GoBackCommand = new RelayCommand(GoBack);
 
-        _accountDataService = accountDataService;
+        
     }
     public async void OnNavigatedTo(object parameter)
     {
@@ -108,13 +114,13 @@ public class ShellViewModel : ObservableRecipient
 
     private void OnMenuFileExit() => Application.Current.Exit();
 
-    private void OnMenuViewsAddTransaction() => Application.Current.Exit();
-
     private void OnMenuSettings() => NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
 
     private void OnMenuViewsAccounts() => NavigationService.NavigateTo(typeof(AccountsViewModel).FullName!);
 
     private void OnMenuViewsPayables() => NavigationService.NavigateTo(typeof(PayablesViewModel).FullName!);
+
+    private void OnMenuViewsAcc() => NavigationService.NavigateTo(typeof(AccViewModel).FullName!);
 
     private void OnMenuViewsListView() => NavigationService.NavigateTo(typeof(ListViewViewModel).FullName!);
 

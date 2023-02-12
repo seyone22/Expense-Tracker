@@ -84,6 +84,8 @@ public partial class App : Application
             services.AddTransient<DashboardPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+            services.AddTransient<AccPage>();
+            services.AddTransient<AccViewModel>();
 
 
             // Configuration

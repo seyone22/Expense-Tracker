@@ -11,6 +11,7 @@ using Expense_Tracker_v1._0.Core.Services;
 namespace Expense_Tracker_v1._0.Services;
 public class ExistingPoolsDataService : IExistingPoolsDataService
 {
+    public static Pool current;
     private List<Pool>? _allPools; //question mark denotes nullable
 
     private static IEnumerable<Pool> AllPools()
@@ -24,4 +25,17 @@ public class ExistingPoolsDataService : IExistingPoolsDataService
         await Task.CompletedTask;
         return _allPools;
     }
+
+    public static async Task setCurrentPool()
+    {
+        current = SqliteDataService.GetCurrentPool();
+        await Task.CompletedTask;
+    }
+
+    public static async Task updatePool()
+    {
+        current = SqliteDataService.GetCurrentPool();
+        await Task.CompletedTask;
+    }
+
 }
