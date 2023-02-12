@@ -17,9 +17,9 @@ public class AccountDataService : IAccountDataService
     {
         return SqliteDataService.GetAccounts();
     }
-    public static Account createAccount(string Name, double Balance)
+    public static Account createAccount(string Name, double Balance, double splitVal)
     {
-        return new Account(Name, Balance);
+        return new Account(Name, Balance, splitVal);
     }
 
     public async Task<IEnumerable<Account>> GetGridDataAsync()

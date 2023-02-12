@@ -31,12 +31,12 @@ public sealed partial class AccPage : Page
         AccViewModel viewModel = App.GetService<AccViewModel>();
     }
 
-
+    
     private void ShowMenu(bool isTransient)
     {
         FlyoutShowOptions myOption = new FlyoutShowOptions();
         myOption.ShowMode = isTransient ? FlyoutShowMode.Transient : FlyoutShowMode.Standard;
-        CommandBarFlyout1.ShowAt(myImageButton, myOption);
+
     }
 
     private void MyImageButton_ContextRequested(Microsoft.UI.Xaml.UIElement sender, ContextRequestedEventArgs args)

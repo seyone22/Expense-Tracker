@@ -24,7 +24,7 @@ internal class SqliteDataService : ISqliteDataService
     public static string GetDBName() => defaultDBName;
     public static string GetCurrentDatabaseName() => currentDBName;
 
-    public async Task<SqliteConnection> InitializeDatabaseAsync(string DBName)
+    public async Task<SqliteConnection> InitializeDatabaseAsync(string DBName, bool IsNewFile)
     {
         if(string.IsNullOrEmpty(DBName))
             DBName = defaultDBName;
@@ -38,7 +38,8 @@ internal class SqliteDataService : ISqliteDataService
         using SqliteConnection conn = new SqliteConnection($"Filename={dbpath}");
         conn.Open();
         await createTablesAsync(conn);
-        await CreateMetadata();
+        if(!IsNewFile)
+            await CreateMetadata();
         return conn;
     }
 
@@ -91,7 +92,8 @@ internal class SqliteDataService : ISqliteDataService
         string createAccountTable = "CREATE TABLE IF NOT " +
         "EXISTS Accounts (acc_id INTEGER PRIMARY KEY, " +
         "account_name NVARCHAR(2048) NULL," +
-        "balance DOUBLE NULL)";
+        "balance DOUBLE NULL," +
+        "dues NVARCHAR(2048) NULL)";
 
         string createTransactionTable = "CREATE TABLE IF NOT " +
             "EXISTS Transactions (tx_id INTEGER PRIMARY KEY, " +
@@ -129,7 +131,8 @@ internal class SqliteDataService : ISqliteDataService
         string createAccountTable = "CREATE TABLE IF NOT " +
         "EXISTS Accounts (acc_id INTEGER PRIMARY KEY, " +
         "account_name NVARCHAR(2048) NULL," +
-        "balance DOUBLE NULL)";
+        "balance DOUBLE NULL," +
+        "dues NVARCHAR(2048) NULL)";
 
         string createTransactionTable = "CREATE TABLE IF NOT " +
             "EXISTS Transactions (tx_id INTEGER PRIMARY KEY, " +
@@ -204,7 +207,7 @@ internal class SqliteDataService : ISqliteDataService
 
             while (query.Read())
             {
-                entries.Add(AccountDataService.createAccount(query.GetString(1),Convert.ToDouble(query.GetString(2))));
+                entries.Add(AccountDataService.createAccount(query.GetString(1),Convert.ToDouble(query.GetString(2)), CalculatePoolTotal() / GetCurrentPool().personCount));
             }
         }
         return entries;
@@ -247,7 +250,7 @@ internal class SqliteDataService : ISqliteDataService
             insertCommand.Connection = db;
 
             // Use parameterized query to prevent SQL injection attacks
-            insertCommand.CommandText = "INSERT INTO Accounts VALUES (NULL, @Name, @Balance);";
+            insertCommand.CommandText = "INSERT INTO Accounts VALUES (NULL, @Name, @Balance, 0);";
             insertCommand.Parameters.AddWithValue("@Name", ac.Name);
             insertCommand.Parameters.AddWithValue("@Balance", ac.Balance);
 
@@ -298,7 +301,7 @@ internal class SqliteDataService : ISqliteDataService
             {
                 db.Open();
 
-                string query = "SELECT * FROM Metadata";
+                string query = "SELECT * FROM Metadata WHERE rowid = 1";
 
                 SqliteCommand selectCommand = new SqliteCommand
                     (query, db);
@@ -310,7 +313,8 @@ internal class SqliteDataService : ISqliteDataService
                     currentPool.author = result.GetString(1);
                     currentPool.name = result.GetString(2);
                     currentPool.dateCreated = Convert.ToDateTime(result.GetString(3));
-                    currentPool.personCount = result.GetInt32(4);
+                    currentPool.personCount = Convert.ToInt32(result.GetString(4));
+                    currentPool.LastModified = Convert.ToDateTime(result.GetString(5));
                 }    
             }
         }
@@ -385,7 +389,7 @@ internal class SqliteDataService : ISqliteDataService
             insertCommand.Connection = db;
 
             // Use parameterized query to prevent SQL injection attacks
-            insertCommand.CommandText = "UPDATE Metadata SET members = (members + 1)";
+            insertCommand.CommandText = "UPDATE Metadata SET members = (members + 1) WHERE rowid = 1";
             insertCommand.ExecuteReader();
         }
     }

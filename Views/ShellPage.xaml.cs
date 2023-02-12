@@ -145,16 +145,17 @@ public sealed partial class ShellPage : Page
 
         if (result == ContentDialogResult.Primary)
         {
+            var IsNewFile = true;
             var f = new FileService();
             var s = new SqliteDataService();
             var d = new DashboardViewModel();
 
             if (f.Exists(newPoolName.Text))
             {
-                //ShowNewPoolDialog.Closed += ShowNewPoolDialog.Closed;
+                IsNewFile = false;
             }
 
-            await s.InitializeDatabaseAsync(f.CleanFileName(newPoolName.Text));
+            await s.InitializeDatabaseAsync(f.CleanFileName(newPoolName.Text), IsNewFile);
             await d.LoadDashboardAsync();
             await ExistingPoolsDataService.setCurrentPool();
         }
@@ -218,6 +219,8 @@ public sealed partial class ShellPage : Page
         SqliteDataService.PushTransaction(newTx);
         SqliteDataService.UpdateAccount(fromAccountInput.Text, Convert.ToDouble(valueInput.Text));
         //We have to refresh our datasource too.
+        //Calculates dues for the account
+        //CalculateDues()
     }
 
     private void addAccountDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

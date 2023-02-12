@@ -36,10 +36,11 @@
             <controls:DataGrid.Columns>
                 <!-- TODO: Replace column definitions to match real data. Consider adding Header values to Resources.resw. -->
                 <controls:DataGridTextColumn Binding="{Binding Name}" Header="Owner" />
-                <controls:DataGridTextColumn Binding="{Binding Balance}" Header="Balance" />
+                <controls:DataGridTextColumn Binding="{Binding Balance}" Header="Amount Spent" />
+                <controls:DataGridTextColumn Binding="{Binding Dues}" Header="Dues" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <Button Content="TESTING BUTTON!!!" Grid.Row="2" x:Name="myImageButton" ContextRequested="MyImageButton_ContextRequested"/>
+        <TextBlock Grid.Row="2" Text="Positive values indicate money to be paid out from pool. Negative values indicate values to be added to pool."/>
     </Grid>
     
 
