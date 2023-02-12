@@ -30,23 +30,4 @@ public sealed partial class ListViewPage : Page
     {
         ListViewViewModel viewModel = App.GetService<ListViewViewModel>();
     }
-
-
-    private void ShowMenu(bool isTransient)
-    {
-        FlyoutShowOptions myOption = new FlyoutShowOptions();
-        myOption.ShowMode = isTransient ? FlyoutShowMode.Transient : FlyoutShowMode.Standard;
-        CommandBarFlyout1.ShowAt(myImageButton, myOption);
-    }
-
-    private void MyImageButton_ContextRequested(Microsoft.UI.Xaml.UIElement sender, ContextRequestedEventArgs args)
-    {
-        // always show a context menu in standard mode
-        ShowMenu(false);
-    }
-
-    private void MyImageButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        ShowMenu((sender as Button).IsPointerOver);
-    }
 }

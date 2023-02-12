@@ -39,7 +39,7 @@
                         <MenuFlyoutItem x:Uid="ShellMenuItem_Views_Dashboard" Command="{x:Bind ViewModel.MenuViewsDashboardCommand}" />
                         <MenuFlyoutItem x:Uid="ShellMenuItem_Views_ListView" Command="{x:Bind ViewModel.MenuViewsListViewCommand}" />
                         <MenuFlyoutItem x:Uid="ShellMenuItem_Views_Accounts" Command="{x:Bind ViewModel.MenuViewsAccCommand}" />
-                        <MenuFlyoutItem x:Uid="ShellMenuItem_Views_Payables" Command="{x:Bind ViewModel.MenuViewsPayablesCommand}" />
+
                     </MenuBarItem.Items>
                 </MenuBarItem>
 
@@ -108,7 +108,7 @@
             <StackPanel>
                 <TextBlock FontSize="24">New Cash Pool</TextBlock>
                 <TextBox x:Name="newPoolName"  Header="Pool Name" PlaceholderText="" Margin="0,10,0,0"></TextBox>
-                <ListView
+                <!--<ListView
                     x:Name="existingPoolsList"
                     ItemsSource="{x:Bind Source}"
                     BorderThickness="1"
@@ -121,7 +121,7 @@
                             <TextBlock Text="{x:Bind name}" x:Phase="1" Margin="0,5,0,5"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                </ListView>
+                </ListView>-->
 
 
             </StackPanel>

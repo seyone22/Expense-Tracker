@@ -38,7 +38,7 @@ internal class SqliteDataService : ISqliteDataService
         using SqliteConnection conn = new SqliteConnection($"Filename={dbpath}");
         conn.Open();
         await createTablesAsync(conn);
-        if(!IsNewFile)
+        if(IsNewFile)
             await CreateMetadata();
         return conn;
     }

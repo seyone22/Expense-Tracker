@@ -26,6 +26,7 @@
             IsReadOnly="True"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
+            HorizontalGridLinesBrush="{ThemeResource TextFillColorPrimary}"
 
             ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}">
             <controls:DataGrid.Resources>
@@ -41,7 +42,7 @@
                 <controls:DataGridTextColumn Binding="{Binding Value}" Header="Amount" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <Button Content="TESTING BUTTON!!!" Grid.Row="2" x:Name="myImageButton" ContextRequested="MyImageButton_ContextRequested"/>
+        
     </Grid>
     
 
