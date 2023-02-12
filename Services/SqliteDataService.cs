@@ -55,7 +55,7 @@ internal class SqliteDataService : ISqliteDataService
                 Connection = db,
 
                 // Use parameterized query to prevent SQL injection attacks
-                CommandText = "INSERT INTO Metadata VALUES (NULL, @PoolAuthor, @PoolName, @DateCreated, @LastModified);"
+                CommandText = "INSERT INTO Metadata VALUES (NULL, @PoolAuthor, @PoolName, @DateCreated, 0, @LastModified);"
             };
 
             insertCommand.Parameters.AddWithValue("@PoolAuthor", "SAMPLE AUTHOR");
@@ -108,7 +108,8 @@ internal class SqliteDataService : ISqliteDataService
             "EXISTS Metadata (rowid INTEGER PRIMARY KEY, " +
             "author NVARCHAR(2048) NULL," +
             "name NVARCHAR(2048) NULL," +
-            "date_created INTEGER(2048) NULL," +
+            "date_created NVARCHAR(2048) NULL," +
+            "members INTEGER(2048) NULL," +
             "last_modified INTEGER(2048) NULL)";
 
 
@@ -146,6 +147,7 @@ internal class SqliteDataService : ISqliteDataService
             "author NVARCHAR(2048) NULL," +
             "name NVARCHAR(2048) NULL," +
             "date_created INTEGER(2048) NULL," +
+            "members INTEGER(2048) NULL," +
             "last_modified INTEGER(2048) NULL)";
 
 
@@ -308,6 +310,7 @@ internal class SqliteDataService : ISqliteDataService
                     currentPool.author = result.GetString(1);
                     currentPool.name = result.GetString(2);
                     currentPool.dateCreated = Convert.ToDateTime(result.GetString(3));
+                    currentPool.personCount = result.GetInt32(4);
                 }    
             }
         }
@@ -347,5 +350,43 @@ internal class SqliteDataService : ISqliteDataService
         Pool pool = new Pool();
         //pool = GetPool();
         return pool.personCount;
+    }
+
+    public static void UpdateAccount(string text, double value)
+    {
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
+        using (SqliteConnection db =
+          new SqliteConnection($"Filename={dbpath}"))
+        {
+            db.Open();
+
+            SqliteCommand insertCommand = new SqliteCommand();
+            insertCommand.Connection = db;
+
+            // Use parameterized query to prevent SQL injection attacks
+            insertCommand.CommandText = "UPDATE Accounts SET balance = (balance + @value) WHERE account_name = @text";
+
+            insertCommand.Parameters.AddWithValue("@value", value);
+            insertCommand.Parameters.AddWithValue("@text", text);
+
+            insertCommand.ExecuteReader();
+        }
+    }
+
+    public static void UpdatePoolAddMember()
+    {
+        string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetCurrentDatabaseName());
+        using (SqliteConnection db =
+          new SqliteConnection($"Filename={dbpath}"))
+        {
+            db.Open();
+
+            SqliteCommand insertCommand = new SqliteCommand();
+            insertCommand.Connection = db;
+
+            // Use parameterized query to prevent SQL injection attacks
+            insertCommand.CommandText = "UPDATE Metadata SET members = (members + 1)";
+            insertCommand.ExecuteReader();
+        }
     }
 }

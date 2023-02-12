@@ -156,6 +156,7 @@ public sealed partial class ShellPage : Page
 
             await s.InitializeDatabaseAsync(f.CleanFileName(newPoolName.Text));
             await d.LoadDashboardAsync();
+            await ExistingPoolsDataService.setCurrentPool();
         }
 
         if (result == ContentDialogResult.Secondary)
@@ -212,16 +213,18 @@ public sealed partial class ShellPage : Page
 
     private void addTransactionDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
+
         Transaction newTx = new Transaction(fromAccountInput.Text, payeeInput.Text, dateInput.Date.Value.DateTime, Convert.ToDouble(valueInput.Text));
         SqliteDataService.PushTransaction(newTx);
+        SqliteDataService.UpdateAccount(fromAccountInput.Text, Convert.ToDouble(valueInput.Text));
         //We have to refresh our datasource too.
-
     }
 
     private void addAccountDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
         Account newAc = new Account(accountNameInput.Text, Convert.ToDouble(balanceInput.Text));
         SqliteDataService.PushAccount(newAc);
+        SqliteDataService.UpdatePoolAddMember();
         //We have to refresh our datasource too.
     }
 }

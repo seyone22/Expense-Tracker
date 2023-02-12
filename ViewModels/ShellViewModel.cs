@@ -82,12 +82,12 @@ public class ShellViewModel : ObservableRecipient
 
     public ShellViewModel(INavigationService navigationService, IAccountDataService accountDataService)
     {
+        _accountDataService = accountDataService;
+
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
-        
 
         MenuFileExitCommand = new RelayCommand(OnMenuFileExit);
-        MenuViewsAddTransactionCommand = new RelayCommand(OnMenuViewsAddTransaction);
         MenuSettingsCommand = new RelayCommand(OnMenuSettings);
         MenuViewsAccountsCommand = new RelayCommand(OnMenuViewsAccounts);
         MenuViewsPayablesCommand = new RelayCommand(OnMenuViewsPayables);
@@ -97,7 +97,7 @@ public class ShellViewModel : ObservableRecipient
 
         GoBackCommand = new RelayCommand(GoBack);
 
-        _accountDataService = accountDataService;
+        
     }
     public async void OnNavigatedTo(object parameter)
     {
@@ -113,8 +113,6 @@ public class ShellViewModel : ObservableRecipient
     private void OnNavigated(object sender, NavigationEventArgs e) => IsBackEnabled = NavigationService.CanGoBack;
 
     private void OnMenuFileExit() => Application.Current.Exit();
-
-    private void OnMenuViewsAddTransaction() => Application.Current.Exit();
 
     private void OnMenuSettings() => NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
 

@@ -36,6 +36,7 @@
             <controls:DataGrid.Columns>
                 <!-- TODO: Replace column definitions to match real data. Consider adding Header values to Resources.resw. -->
                 <controls:DataGridTextColumn Binding="{Binding Name}" Header="Owner" />
+                <controls:DataGridTextColumn Binding="{Binding Balance}" Header="Balance" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <Button Content="TESTING BUTTON!!!" Grid.Row="2" x:Name="myImageButton" ContextRequested="MyImageButton_ContextRequested"/>
